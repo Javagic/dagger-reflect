@@ -112,6 +112,11 @@ final class ReflectiveMembersInjector<T> implements MembersInjector<T> {
       }
 
       target = target.getSuperclass();
+      String clazzName = target.getName();
+      /** Skip system classes, this just degrades performance. */
+      if (clazzName.startsWith("java.") || clazzName.startsWith("javax.") || clazzName.startsWith("android.") || clazzName.startsWith("androidx.")) {
+        target = null;
+      }
     }
 
     return new ReflectiveMembersInjector<>(classInjectors);
